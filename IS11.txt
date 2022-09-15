@@ -1,0 +1,83 @@
+Joshua Ginn 	Section 18655	2/24/2021	Prof. Moser
+
+
+
+/* Creates the tablespace for TVStations table */
+
+create table TVSTATIONS (
+	StationID	varchar(4),
+	StationName	varchar(15)	Not null,
+	Primary key (StationID));
+
+
+
+/* Creates the tablespace for Actors table */
+
+create table ACTORS (
+	ActorID		varchar(4),
+	AFName		varchar(20)	Not null,
+	ALName		varchar(15)	Not null,
+	AgentID		varchar(10)	Not null,
+	Primary key (ActorID));
+
+
+
+/* Creates the tablespace for ActorMovies table */
+
+create table ACTORMOVIES (
+	ActorID		varchar(6),
+	MovieID		varchar(10)	Unique,
+	CharacterRole	varchar(20)	Not null,
+	Primary key (ActorID, MovieID),
+	Foreign key (ActorID) REFERENCES ACTORS (ActorID));
+
+
+
+/* Creates the tablespace for TVShows table */
+
+create table TVSHOWS (
+	TVID		varchar(4),
+	TVName		varchar(20)	Not null,
+	StationID	varchar(4)	Not null,
+	Primary key (TVID),
+	Foreign key (StationID) REFERENCES TVSTATIONS (StationID));	
+
+
+
+/* Creates the tablespace for Episode table */
+
+create table EPISODE (
+	EpisodeID	varchar(10),
+	EName		varchar(20)	Not null,
+	EAirDate	Date		Not null,
+	Rating		decimal (3,2)	Not null,
+	TVID		varchar(4)	Not null,
+	Primary key (EpisodeID),
+	Foreign key (TVID) REFERENCES TVSHOWS (TVID));
+
+
+
+/* Creates the tablespace for ActorTVRole table */
+
+create table ACTORTVROLE (
+	TVID		varchar(4)	Not null,
+	ActorID		varchar(6)	Not null,
+	StateDate 	Date		Not null,
+	TVRole		varchar(20)	Not null,
+	Primary key (TVID, ActorID),
+	Foreign key (TVID) REFERENCES TVSHOWS (TVID),
+	Foreign key (ActorID) REFERENCES ACTORS (ActorID));
+
+
+
+/* Creates the tablespace for EpisodeRole table */
+
+create table EPISODEROLE (
+	EpisodeID	varchar(10)	Not null,
+	TVID		varchar(4)	Not null,
+	ActorID		varchar(6)	Not null,
+	AlternateRole	varchar(20)	Not null,
+	Primary Key (EpisodeTV, TVID, ACTORID),
+	Foreign key (EpisodeID) REFERENCES EPISODE (EpisodeID),
+	Foreign key (TVID) REFERENCES TVSHOWS (TVID),
+	Foreign key (ActorID) REFERENCES ACTORS (ActorID));
